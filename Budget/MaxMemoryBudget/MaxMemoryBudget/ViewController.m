@@ -42,7 +42,7 @@
 
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkTick:)];
     [_displayLink setPaused:YES];
-    _displayLink.preferredFramesPerSecond = 30;
+//    _displayLink.preferredFramesPerSecond = 30;
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
 
@@ -79,12 +79,23 @@
     }
 }
 
+// iOS 系统在强杀掉 App 之前还有 6 秒钟的时间，足够获取记录内存信息了
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
     firstMemoryWarningReceived = YES;
     [memoryWarnings addObject:@(allocatedMB)];
 
+    leakTest = !leakTest;
+    // 测试内存释放
+//    if (leakTest) {
+//        while (allocatedMB > 1) {
+//            free(p[allocatedMB]);
+//            allocatedMB--;
+//        }
+//        allocatedMB = 0;
+//    }
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     [memoryWarnings writeToFile:[basePath stringByAppendingPathComponent:MEMORY_WARNINGS_FILE_NAME] atomically:YES];
