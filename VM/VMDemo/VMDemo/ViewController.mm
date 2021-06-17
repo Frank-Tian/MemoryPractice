@@ -8,6 +8,15 @@
 #import "ViewController.h"
 #import "Person.h"
 
+struct SomeObject {
+    SomeObject() {
+        printf("create--------- %s\n", __func__);
+    }
+    ~SomeObject() {
+        printf("destory--------- %s\n", __func__);
+    }
+};
+
 @interface ViewController ()
 
 @property (nonatomic, strong) NSMutableArray *group;
@@ -19,14 +28,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.group = [NSMutableArray array];
+    SomeObject obj;
     
-    for (int i = 0; i < 10; i++) {
-        [self.group addObject:[[Person alloc] init]];
-    }
-    self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(action) object:nil];
-    [self.thread setName:@"com.tech.test"];
-    [self.thread start];
+//    self.group = [NSMutableArray array];
+//
+//    for (int i = 0; i < 10; i++) {
+//        [self.group addObject:[[Person alloc] init]];
+//    }
+//    self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(action) object:nil];
+//    [self.thread setName:@"com.tech.test"];
+//    [self.thread start];
 }
 
 - (void)action {
